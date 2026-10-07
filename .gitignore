@@ -29,3 +29,6 @@ desktop.ini
 
 # editor settings
 .idea/
+
+# private local planning documents (never commit)
+PORTFOLIO_CONTENT_PLAN.md

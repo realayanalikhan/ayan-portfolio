@@ -182,7 +182,7 @@ Each adapted document was measured in two ways and compared with paired statisti
     Adding specification changed the output substantially, with large effect sizes for GPT-5 Mini and medium ones for Gemini 3.6 Flash. But the direction was set by the model, not the instruction: the same added specification made Gemini simplify more and GPT-5 Mini simplify less, on all three readability measures.
   </li>
   <li>
-    <strong>Model choice matters as much as prompt choice.</strong>
+    <strong>Neither model nor prompt choice dominates.</strong>
     Model differences were large under the baseline prompt. Under the structured prompt they were not statistically detectable on readability, which shows that a difference was not detected, not that the models became equivalent.
   </li>
   <li>

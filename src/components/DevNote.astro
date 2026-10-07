@@ -1,0 +1,10 @@
+---
+/** Marks a pending asset during local development only. Never rendered in production builds. */
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+{import.meta.env.DEV && <p class="dev-note mono">Pending asset: {text}</p>}

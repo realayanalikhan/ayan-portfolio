@@ -1,0 +1,34 @@
+---
+interface Props {
+  items: string[];
+  label?: string;
+}
+
+const { items, label = "Technologies" } = Astro.props;
+---
+
+{items.length > 0 && (
+  <ul class="stack mono" aria-label={label}>
+    {items.map((item) => (
+      <li>{item}</li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+  }
+
+  .stack li:not(:last-child)::after {
+    content: "/";
+    margin-inline: 0.5rem;
+    color: var(--rule);
+  }
+</style>

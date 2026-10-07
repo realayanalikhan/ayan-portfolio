@@ -1,0 +1,141 @@
+---
+import { getCollection } from "astro:content";
+import { site } from "../data/site";
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
+const entries = (await getCollection("experience")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const areaLabel = {
+  technology: "Technology",
+  creative: "Creative",
+  business: "Business",
+};
+
+function organisation(entry: (typeof entries)[number]) {
+  if (entry.data.usesEmployerSetting)
+    return site.employer.show ? site.employer.name : undefined;
+  return entry.data.organisation;
+}
+---
+
+<section class="section wrap" aria-labelledby="experience">
+  <SectionHeading id="experience" number={number} title="Experience" />
+
+  <ol class="timeline">
+    {entries.map((entry) => {
+      const org = organisation(entry);
+      return (
+        <li class="item">
+          <p class="when mono">
+            <span>{entry.data.period}</span>
+            <span class="label">{areaLabel[entry.data.area]}</span>
+          </p>
+          <div class="body">
+            <h3>
+              {entry.data.role}
+              {org && <span class="org">, {org}</span>}
+            </h3>
+            <p class="summary">{entry.data.summary}</p>
+            {entry.data.highlights.length > 0 && (
+              <ul class="highlights">
+                {entry.data.highlights.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </li>
+      );
+    })}
+  </ol>
+</section>
+
+<style>
+  .timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .item:first-child {
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  .when {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    align-items: baseline;
+    color: var(--ink-2);
+  }
+
+  h3 {
+    font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
+    font-weight: 620;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .org {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .summary {
+    max-width: 62ch;
+    margin-top: 0.4rem;
+    color: var(--ink-2);
+  }
+
+  .highlights {
+    max-width: 62ch;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .highlights li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  .highlights li + li {
+    margin-top: 0.35rem;
+  }
+
+  .highlights li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  @media (min-width: 64rem) {
+    .item {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      column-gap: 2rem;
+    }
+
+    .when {
+      flex-direction: column;
+    }
+  }
+</style>

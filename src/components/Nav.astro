@@ -1,0 +1,169 @@
+---
+import { contactLinks, site } from "../data/site";
+import Icon from "./Icon.astro";
+
+// On the home page links are in-page anchors; elsewhere they point back to home.
+const base = Astro.url.pathname === "/" ? "" : "/";
+const items = [
+  { href: `${base}#work`, label: "Work" },
+  { href: `${base}#content`, label: "Content" },
+  { href: `${base}#about`, label: "About" },
+  { href: `${base}#experience`, label: "Experience" },
+  ...(contactLinks().length > 0
+    ? [{ href: `${base}#contact`, label: "Contact" }]
+    : []),
+];
+---
+
+<nav class="nav" aria-label="Main">
+  <ul class="nav-desktop">
+    {items.map((item) => (
+      <li>
+        <a href={item.href}>{item.label}</a>
+      </li>
+    ))}
+  </ul>
+
+  <details class="nav-mobile">
+    <summary>Menu</summary>
+    <ul>
+      {items.map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ))}
+      {site.cv.available && (
+        <li>
+          <a href={site.cv.href} download>
+            Download CV
+          </a>
+        </li>
+      )}
+    </ul>
+  </details>
+
+  {site.cv.available && (
+    <a class="cv-link" href={site.cv.href} download>
+      CV
+      <Icon name="download" />
+    </a>
+  )}
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .nav-desktop {
+    display: none;
+  }
+
+  .nav-desktop a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    transition: color var(--fast) var(--ease);
+  }
+
+  .nav-desktop a:hover {
+    color: var(--accent);
+  }
+
+  .cv-link {
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    padding-inline: 0.875rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    font-weight: 560;
+    font-size: 0.9375rem;
+  }
+
+  .cv-link:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* Mobile: a native disclosure menu, no JavaScript. */
+  .nav-mobile {
+    position: relative;
+  }
+
+  .nav-mobile summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.875rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .nav-mobile summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-mobile[open] summary {
+    border-color: var(--rule-strong);
+  }
+
+  .nav-mobile ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    min-width: 13rem;
+    padding: 0.5rem;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 32px -16px rgb(0 0 0 / 0.35);
+  }
+
+  .nav-mobile li a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+  }
+
+  .nav-mobile li a:hover {
+    background: var(--surface);
+  }
+
+  @media (min-width: 48rem) {
+    .nav-desktop {
+      display: flex;
+    }
+
+    .nav-mobile {
+      display: none;
+    }
+
+    .cv-link {
+      display: inline-flex;
+    }
+  }
+</style>

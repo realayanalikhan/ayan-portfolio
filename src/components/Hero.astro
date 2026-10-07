@@ -1,0 +1,220 @@
+---
+import { contactLinks, site } from "../data/site";
+import Icon from "./Icon.astro";
+
+const focus: { label: string; value: string; href?: string }[] = [
+  { label: "Builds", value: "Full-stack web applications" },
+  { label: "Backends", value: "Secure, data-integrity-first" },
+  { label: "Practice", value: "Testing and delivery" },
+  {
+    label: "Research",
+    value: "Applied LLM evaluation (MSc)",
+    href: "/work/llm-text-simplification/",
+  },
+  { label: "Also", value: "Video, content and entrepreneurship" },
+];
+---
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div class="intro reveal">
+    <h1 id="hero-title">
+      <span class="name">{site.name},</span>{" "}
+      <span class="title">{site.title}.</span>
+    </h1>
+    <p class="statement">{site.statement}</p>
+    <ul class="meta" aria-label="Background">
+      {site.meta.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+    <div class="actions">
+      <a class="btn btn--primary" href="#work">
+        View work
+        <Icon name="arrow-right" />
+      </a>
+      {site.cv.available && (
+        <a class="btn" href={site.cv.href} download>
+          Download CV
+          <Icon name="download" />
+        </a>
+      )}
+      {contactLinks().length > 0 && (
+        <a class="btn" href="#contact">
+          Contact
+        </a>
+      )}
+    </div>
+  </div>
+
+  <dl class="spec reveal" aria-label="Focus">
+    {focus.map((row) => (
+      <div class:list={["spec-row", row.href && "has-link"]}>
+        <dt class="label">{row.label}</dt>
+        <dd>
+          {row.href ? (
+            <a class="spec-link" href={row.href}>
+              {row.value}
+              <Icon name="arrow-right" />
+            </a>
+          ) : (
+            row.value
+          )}
+        </dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<style>
+  .hero {
+    display: grid;
+    gap: clamp(1.75rem, 1.5rem + 1.2vw, 2.25rem);
+    padding-block: clamp(2.25rem, 1.5rem + 3vw, 3.5rem) 0;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 1.45rem + 4.4vw, 5.25rem);
+    font-weight: 660;
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .name,
+  .title {
+    display: block;
+  }
+
+  .name {
+    color: var(--muted);
+    font-weight: 560;
+  }
+
+  .statement {
+    max-width: 40ch;
+    margin-top: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+    color: var(--ink-2);
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    line-height: 1.45;
+    text-wrap: pretty;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .meta li:not(:last-child)::after {
+    content: "·";
+    margin-inline: 0.6rem;
+    color: var(--muted);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .spec {
+    margin: 0;
+    border-top: 1px solid var(--rule-strong);
+    animation-delay: 60ms;
+  }
+
+  .spec-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+    padding-block: 0.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .spec dd {
+    margin: 0;
+    color: var(--ink-2);
+    text-wrap: balance;
+  }
+
+  /* The research cell links to the case study; the link covers the whole cell. */
+  .spec-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    gap: 0.35rem;
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 0.25em;
+  }
+
+  .spec-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .spec-link :global(.icon) {
+    align-self: center;
+    color: var(--accent);
+    transition: transform var(--fast) var(--ease);
+  }
+
+  .has-link:hover .spec-link :global(.icon) {
+    transform: translateX(2px);
+  }
+
+  .has-link:hover {
+    background: var(--surface);
+  }
+
+  .spec-link:focus-visible {
+    outline: none;
+  }
+
+  .spec-link:focus-visible::after {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  @media (min-width: 48rem) {
+    .spec {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .spec {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      column-gap: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .spec-row {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+      align-content: start;
+      padding: 0.9rem 1.25rem 1rem 0;
+      border-bottom: 0;
+    }
+
+    .spec-row + .spec-row {
+      padding-left: 1.25rem;
+      border-left: 1px solid var(--rule);
+    }
+  }
+</style>

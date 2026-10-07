@@ -1,0 +1,76 @@
+---
+const capabilities = [
+  {
+    term: "Full-stack software",
+    detail: "TypeScript, React, Next.js, Node.js and Express web applications.",
+  },
+  {
+    term: "Databases, security and data integrity",
+    detail:
+      "PostgreSQL and Supabase, row-level security, authentication, authorisation and migrations.",
+  },
+  {
+    term: "Testing and delivery",
+    detail:
+      "Automated application and database testing, acceptance testing, releases and iOS App Store review.",
+  },
+  {
+    term: "Applied LLM research",
+    detail:
+      "LLM APIs, prompt-strategy evaluation, readability and semantic-similarity metrics, paired statistics.",
+  },
+  {
+    term: "Content and video",
+    detail:
+      "Planning, scripting, filming, presenting, editing and short-form publishing.",
+  },
+  {
+    term: "Entrepreneurship",
+    detail:
+      "Founding and running a business: pricing, customer communication, fulfilment and growth.",
+  },
+];
+---
+
+<dl class="capabilities">
+  {capabilities.map((item, i) => (
+    <div class="cap">
+      <dt>
+        <span class="label" aria-hidden="true">
+          {String(i + 1).padStart(2, "0")}
+        </span>
+        <span class="term">{item.term}</span>
+      </dt>
+      <dd>{item.detail}</dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .capabilities {
+    margin: 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  .cap {
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  dt {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+
+  .term {
+    font-weight: 620;
+  }
+
+  dd {
+    margin: 0.3rem 0 0;
+    padding-left: 2.1rem;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+</style>

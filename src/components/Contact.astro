@@ -1,0 +1,71 @@
+---
+import { contactLinks } from "../data/site";
+import DevNote from "./DevNote.astro";
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
+const links = contactLinks();
+---
+
+{links.length > 0 ? (
+  <section class="section wrap" aria-labelledby="contact">
+    <SectionHeading id="contact" number={number} title="Contact" />
+    <ul class="links">
+      {links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            {...(link.external
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+          >
+            <span>{link.label}</span>
+            <Icon name={link.external ? "arrow-up-right" : "arrow-right"} />
+            {link.external && <span class="sr-only">(opens in a new tab)</span>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+) : (
+  <div class="wrap">
+    <DevNote text="contact email, LinkedIn and GitHub URLs (src/data/site.ts); the Contact section is hidden until set" />
+  </div>
+)}
+
+<style>
+  .links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  .links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 4.5rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: clamp(1.375rem, 1.1rem + 1.4vw, 2.5rem);
+    font-weight: 620;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    transition: color var(--fast) var(--ease);
+  }
+
+  .links a:hover {
+    color: var(--accent);
+  }
+
+  .links a :global(.icon) {
+    width: 0.75em;
+    height: 0.75em;
+  }
+</style>

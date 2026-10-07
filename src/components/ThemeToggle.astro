@@ -1,0 +1,76 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<!-- Hidden until the script runs, so it never appears as a dead control without JavaScript. -->
+<button
+  class="theme-toggle"
+  type="button"
+  aria-pressed="false"
+  data-theme-toggle
+  hidden
+>
+  <Icon name="moon" class="when-light" />
+  <Icon name="sun" class="when-dark" />
+  <span class="sr-only">Dark theme</span>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>(
+    "[data-theme-toggle]",
+  );
+  if (button) {
+    const root = document.documentElement;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const current = () =>
+      root.dataset.theme ?? (media.matches ? "dark" : "light");
+    const sync = () =>
+      button.setAttribute("aria-pressed", String(current() === "dark"));
+
+    button.hidden = false;
+    sync();
+    media.addEventListener("change", sync);
+    button.addEventListener("click", () => {
+      const next = current() === "dark" ? "light" : "dark";
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem("theme", next);
+      } catch {
+        /* storage unavailable: the choice lasts for this page only */
+      }
+      sync();
+    });
+  }
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color var(--fast) var(--ease);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--rule-strong);
+  }
+
+  .theme-toggle :global(.icon) {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+
+  .theme-toggle[aria-pressed="true"] :global(.when-light),
+  .theme-toggle[aria-pressed="false"] :global(.when-dark) {
+    display: none;
+  }
+</style>

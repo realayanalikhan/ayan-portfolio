@@ -1,0 +1,15 @@
+- id: msc
+  qualification: MSc Advanced Computer Science
+  institution: University of Exeter
+  period: 2025 – 2026
+  detail: "Dissertation: controllable text simplification with large language models."
+  link:
+    href: /work/llm-text-simplification/
+    label: Read the case study
+  order: 1
+- id: btech
+  qualification: B.Tech Computer Science and Engineering
+  institution: VIT University
+  period: 2021 – 2025
+  detail: Grade 8.41/10
+  order: 2

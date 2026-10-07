@@ -1,0 +1,32 @@
+# Public experience entries. Approved, evidence-backed wording only.
+- id: software-developer
+  role: Software Developer
+  usesEmployerSetting: true
+  period: Aug 2026 – Oct 2026
+  area: technology
+  summary: Software development on client web, data and mobile projects.
+  highlights:
+    - Led and contributed to the delivery of client projects across web applications, data migration and mobile releases (see Selected Work).
+    - Took work from requirements through implementation, automated and acceptance testing, release and stakeholder review.
+  order: 1
+- id: content-creator
+  role: Content Creator
+  organisation: Edvoy Educational Services Ltd
+  period: Nov 2025 – Jun 2026
+  area: creative
+  summary: Planned, produced, edited and published short-form video about student life in the UK.
+  highlights:
+    - 75+ reels published across Instagram, YouTube Shorts, Facebook Reels and Snapchat.
+    - Coordinated content ideas, timelines and approvals with a remote international team of five creators.
+    - Used referral links and engagement insights to support student sign-up campaigns.
+  order: 2
+- id: founder
+  role: Founder
+  organisation: Independent student-focused business
+  period: "2024"
+  area: business
+  summary: Launched and independently ran a student-focused certification voucher business on a zero-capital model.
+  highlights:
+    - Handled customer communication, pricing, order fulfilment and reporting.
+    - Grew the business through referrals and repeat customers.
+  order: 3

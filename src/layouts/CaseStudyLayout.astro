@@ -1,0 +1,218 @@
+---
+import type { MarkdownHeading } from "astro";
+import type { CollectionEntry } from "astro:content";
+import CaseFigure from "../components/CaseFigure.astro";
+import CaseHeader from "../components/CaseHeader.astro";
+import FactStrip from "../components/FactStrip.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/site";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  headings: MarkdownHeading[];
+}
+
+const { project, headings } = Astro.props;
+const { title, summary, facts = [], links, images = [] } = project.data;
+const hasResources = Boolean(links && (links.report || links.code));
+
+// "On this page" entries: the Markdown sections, plus figures/resources when they exist.
+const toc = [
+  ...headings
+    .filter((h) => h.depth === 2)
+    .map((h) => ({ slug: h.slug, text: h.text })),
+  ...(images.length ? [{ slug: "figures", text: "Figures" }] : []),
+  ...(hasResources ? [{ slug: "resources", text: "Resources" }] : []),
+];
+
+const author = { "@type": "Person", name: site.name };
+const article = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  headline: title,
+  name: title,
+  description: summary,
+  author,
+  inLanguage: site.locale,
+  datePublished: "2026-08",
+  about: [
+    "Large language models",
+    "Text simplification",
+    "Readability",
+    "Prompt engineering",
+  ],
+  sourceOrganization: {
+    "@type": "CollegeOrUniversity",
+    name: "University of Exeter",
+  },
+  ...(Astro.site ? { url: new URL(Astro.url.pathname, Astro.site).href } : {}),
+};
+---
+
+<BaseLayout
+  title={`${title} | ${site.name}`}
+  description={summary}
+  type="article"
+  jsonLd={[article]}
+>
+  <div class="wrap">
+    <CaseHeader project={project} />
+    <FactStrip facts={facts} />
+
+    <div class="layout">
+      <div class="content">
+        <article class="prose body">
+          <slot />
+        </article>
+
+        {images.length > 0 && (
+          <section class="figures" aria-labelledby="figures">
+            <h2 id="figures">Figures</h2>
+            {images.map((image, i) => (
+              <CaseFigure
+                src={image.src}
+                alt={image.alt}
+                caption={image.caption}
+                number={i + 1}
+              />
+            ))}
+          </section>
+        )}
+
+        {hasResources && links && (
+          <section class="resources" aria-labelledby="resources">
+            <h2 id="resources">Resources</h2>
+            <ul>
+              {links.report && (
+                <li>
+                  <a class="text-link" href={links.report}>
+                    Read the dissertation <Icon name="arrow-up-right" />
+                  </a>
+                </li>
+              )}
+              {links.code && (
+                <li>
+                  <a class="text-link" href={links.code}>
+                    View the code <Icon name="arrow-up-right" />
+                  </a>
+                </li>
+              )}
+            </ul>
+          </section>
+        )}
+      </div>
+
+      {toc.length > 2 && (
+        <nav class="toc" aria-label="On this page">
+          <p class="label">On this page</p>
+          <ol>
+            {toc.map((item) => (
+              <li>
+                <a href={`#${item.slug}`}>{item.text}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+    </div>
+
+    <footer class="case-footer">
+      <a class="btn" href="/#work">
+        <Icon name="arrow-left" />
+        Back to selected work
+      </a>
+    </footer>
+  </div>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem 4rem;
+  }
+
+  .content {
+    min-width: 0;
+  }
+
+  .body {
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .body :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .figures,
+  .resources {
+    display: grid;
+    gap: 1.5rem;
+    max-width: var(--measure);
+    margin-bottom: 3rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .figures h2,
+  .resources h2 {
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    font-weight: 620;
+    letter-spacing: -0.015em;
+  }
+
+  .resources ul {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .toc {
+    display: none;
+  }
+
+  .case-footer {
+    padding-block: 2rem clamp(3rem, 2rem + 4vw, 6rem);
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (min-width: 64rem) {
+    .layout {
+      grid-template-columns: minmax(0, var(--measure)) 14rem;
+      justify-content: space-between;
+    }
+
+    .toc {
+      display: block;
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+      align-self: start;
+      margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--rule-strong);
+    }
+
+    .toc ol {
+      margin: 0.75rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc a {
+      display: flex;
+      align-items: center;
+      min-height: 2.75rem;
+      color: var(--ink-2);
+      font-size: 0.9375rem;
+      text-decoration: none;
+      transition: color var(--fast) var(--ease);
+    }
+
+    .toc a:hover {
+      color: var(--accent);
+    }
+  }
+</style>

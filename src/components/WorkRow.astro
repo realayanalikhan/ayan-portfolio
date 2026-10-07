@@ -1,0 +1,154 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Icon from "./Icon.astro";
+import StackList from "./StackList.astro";
+
+/** The featured case study: the most prominent entry in the work index. */
+interface Props {
+  project: CollectionEntry<"projects">;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+const {
+  title,
+  summary,
+  label,
+  system,
+  period,
+  stack,
+  indexFacts = [],
+} = project.data;
+const href = `/work/${project.id}/`;
+---
+
+<article class="featured" aria-labelledby={`project-${project.id}`}>
+  <div class="head">
+    <p class="label kicker">
+      <span aria-hidden="true">{String(index).padStart(2, "0")} — </span>
+      Featured research · {label}
+    </p>
+    <p class="label meta">
+      {system} · {period}
+    </p>
+  </div>
+
+  <div class="body">
+    <div class="main">
+      <h3 id={`project-${project.id}`}>{title}</h3>
+      <p class="summary">{summary}</p>
+      <StackList items={stack} />
+    </div>
+
+    <div class="aside">
+      {indexFacts.length > 0 && (
+        <ul class="facts" aria-label="Study at a glance">
+          {indexFacts.map((fact) => (
+            <li>{fact}</li>
+          ))}
+        </ul>
+      )}
+      <a class="btn btn--primary cta" href={href}>
+        Read case study
+        <Icon name="arrow-right" />
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .featured {
+    padding: clamp(1.25rem, 1rem + 1.2vw, 1.75rem)
+      clamp(1.25rem, 1rem + 1.5vw, 2.25rem)
+      clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
+    background: var(--surface);
+    border-top: 2px solid var(--accent);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+  }
+
+  .kicker {
+    color: var(--accent);
+  }
+
+  .body {
+    display: grid;
+    gap: 1.5rem 3rem;
+    margin-top: 0.75rem;
+  }
+
+  h3 {
+    max-width: 26ch;
+    font-size: clamp(1.5rem, 1.15rem + 1.6vw, 2.5rem);
+    font-weight: 650;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .summary {
+    max-width: 58ch;
+    margin-block: 0.9rem 1rem;
+    color: var(--ink-2);
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  }
+
+  .aside {
+    display: grid;
+    gap: 1.25rem;
+    align-content: end;
+    justify-items: start;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+  }
+
+  .facts li:not(:last-child)::after {
+    content: "·";
+    margin-inline: 0.55rem;
+    color: var(--muted);
+  }
+
+  @media (min-width: 64rem) {
+    .body {
+      grid-template-columns: minmax(0, 1fr) 17rem;
+    }
+
+    .facts {
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      border-top: 1px solid var(--rule-strong);
+    }
+
+    .facts li {
+      padding-block: 0.55rem;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.9375rem;
+    }
+
+    .facts li::after {
+      display: none;
+    }
+
+    .cta {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>

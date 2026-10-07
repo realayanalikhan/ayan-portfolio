@@ -1,0 +1,65 @@
+---
+import { site } from "../data/site";
+import Icon from "./Icon.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap bar">
+    <p class="mono">
+      © {year} {site.name}
+    </p>
+    <ul class="links mono">
+      {site.cv.available && (
+        <li>
+          <a href={site.cv.href} download>
+            Download CV
+          </a>
+        </li>
+      )}
+      <li>
+        <a href="#top">
+          Back to top
+          <Icon name="arrow-up" />
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-block: 1.5rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+</style>

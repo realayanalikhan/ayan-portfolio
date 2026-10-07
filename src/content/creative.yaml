@@ -1,0 +1,13 @@
+# Selected own videos/Reels (pending). Add 4–8 approved, non-sensitive items:
+# put the thumbnail in src/assets/creative/ and add an entry like:
+#
+# - id: example-slug
+#   title: Video title
+#   platform: youtube        # youtube | instagram | other
+#   kind: vlog               # vlog | reel | short
+#   url: https://...
+#   thumbnail: ../assets/creative/example.jpg
+#   alt: Describe what the thumbnail shows
+#   year: "2026"
+#   order: 1
+[]

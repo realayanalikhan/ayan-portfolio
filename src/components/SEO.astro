@@ -1,0 +1,48 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  title: string;
+  description: string;
+  type?: "website" | "article";
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, type = "website", jsonLd = [] } = Astro.props;
+
+// Absolute URLs only when the production URL is configured (SITE_URL).
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+const image =
+  Astro.site && site.socialImage
+    ? new URL(site.socialImage, Astro.site).href
+    : undefined;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{canonical && <link rel="canonical" href={canonical} />}
+
+<meta property="og:type" content={type} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={site.locale.replace("-", "_")} />
+{canonical && <meta property="og:url" content={canonical} />}
+{image && <meta property="og:image" content={image} />}
+{image && <meta property="og:image:width" content="1200" />}
+{image && <meta property="og:image:height" content="630" />}
+
+<meta name="twitter:card" content={image ? "summary_large_image" : "summary"} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{image && <meta name="twitter:image" content={image} />}
+
+{jsonLd.map((data) => (
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(data)}
+  />
+))}

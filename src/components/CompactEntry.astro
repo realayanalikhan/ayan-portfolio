@@ -1,0 +1,176 @@
+---
+import type { CollectionEntry } from "astro:content";
+import StackList from "./StackList.astro";
+
+/** A text-only client-work entry: no images, links, figures or status claims. */
+interface Props {
+  project: CollectionEntry<"projects">;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+const { title, summary, system, period, focus, stack, responsibilities } =
+  project.data;
+---
+
+<li class="row">
+  <span class="idx label" aria-hidden="true">
+    {String(index).padStart(2, "0")}
+  </span>
+  <div class="main">
+    <p class="tags">
+      <span class="label">Client work · details confidential</span>
+      {focus && <span class="focus">{focus}</span>}
+    </p>
+    <h4>{title}</h4>
+    <p class="summary">{summary}</p>
+    {responsibilities.length > 0 && (
+      <ul class="resp">
+        {responsibilities.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )}
+    <StackList items={stack} />
+  </div>
+  <dl class="meta mono">
+    <div>
+      <dt class="label">Type</dt>
+      <dd>{system}</dd>
+    </div>
+    <div>
+      <dt class="label">Year</dt>
+      <dd>{period}</dd>
+    </div>
+  </dl>
+</li>
+
+<style>
+  .row {
+    display: grid;
+    gap: 0.75rem;
+    padding-block: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .idx {
+    color: var(--muted);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+  }
+
+  .focus {
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h4 {
+    margin-top: 0.6rem;
+    font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+    font-weight: 630;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .summary {
+    max-width: 62ch;
+    margin-top: 0.5rem;
+    color: var(--ink-2);
+  }
+
+  .resp {
+    max-width: 62ch;
+    margin: 0.75rem 0 0.9rem;
+    padding: 0;
+    list-style: none;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .resp li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  .resp li + li {
+    margin-top: 0.3rem;
+  }
+
+  .resp li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--muted);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin: 0;
+  }
+
+  .meta div {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+
+  .meta dd {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  /* Mobile: keep the two most important responsibilities, and drop the type/year
+     details, which the summary and the group heading already state. */
+  @media (max-width: 39.99rem) {
+    .resp li:nth-child(n + 3) {
+      display: none;
+    }
+
+    .meta {
+      display: none;
+    }
+
+    .resp {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .row {
+      grid-template-columns: 3.5rem minmax(0, 1fr) 15rem;
+      column-gap: 2rem;
+    }
+
+    .idx {
+      padding-top: 0.2rem;
+    }
+
+    .meta {
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .meta div {
+      display: block;
+    }
+
+    .meta dd {
+      margin-top: 0.15rem;
+    }
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+import { site } from "../data/site";
+import Nav from "./Nav.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+// The home-page hero already states the title, so the header only repeats it elsewhere.
+const isHome = Astro.url.pathname === "/";
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="wordmark" href="/" aria-label={`${site.name}, home`}>
+      <span class="name">{site.name}</span>
+      {!isHome && <span class="role label">{site.title}</span>}
+    </a>
+    <div class="controls">
+      <Nav />
+      <ThemeToggle />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--header-h);
+  }
+
+  .wordmark {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 2.75rem;
+    text-decoration: none;
+    line-height: 1.15;
+  }
+
+  .name {
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+
+  .role {
+    display: none;
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 30rem) {
+    .role {
+      display: block;
+    }
+  }
+</style>

@@ -1,11 +1,55 @@
 ---
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import ContentVideo from "../components/ContentVideo.astro";
+import Education from "../components/Education.astro";
+import Experience from "../components/Experience.astro";
+import Hero from "../components/Hero.astro";
+import WorkIndex from "../components/WorkIndex.astro";
+import { contactLinks, site } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const sameAs = [
+  site.contact.linkedin,
+  site.contact.github,
+  site.channels.youtube,
+  site.channels.instagram,
+].filter(Boolean);
+
+const person = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  jobTitle: site.title,
+  description: site.description,
+  alumniOf: [
+    { "@type": "CollegeOrUniversity", name: "University of Exeter" },
+    { "@type": "CollegeOrUniversity", name: "VIT University" },
+  ],
+  knowsAbout: [
+    "Full-stack web development",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "PostgreSQL",
+    "Software testing",
+    "Large language models",
+    "Video production",
+  ],
+  ...(Astro.site ? { url: Astro.site.href } : {}),
+  ...(sameAs.length ? { sameAs } : {}),
+};
+
+const n = (i: number) => String(i).padStart(2, "0");
+const hasContact = contactLinks().length > 0;
 ---
 
-<!-- Temporary page so the dev server and build have a route. Not the homepage design. -->
-<BaseLayout title="Portfolio">
-  <main class="p-8">
-    <h1 class="text-2xl font-semibold">Portfolio</h1>
-    <p>Under construction.</p>
-  </main>
+<BaseLayout jsonLd={[person]}>
+  <Hero />
+  <WorkIndex number={n(1)} />
+  <ContentVideo number={n(2)} />
+  <About number={n(3)} />
+  <Experience number={n(4)} />
+  <Education number={n(5)} />
+  <Contact number={hasContact ? n(6) : ""} />
 </BaseLayout>

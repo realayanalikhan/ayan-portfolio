@@ -1,0 +1,131 @@
+---
+import { getCollection } from "astro:content";
+import Icon from "./Icon.astro";
+import SectionHeading from "./SectionHeading.astro";
+
+interface Props {
+  number: string;
+}
+
+const { number } = Astro.props;
+const education = (await getCollection("education")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const certifications = (await getCollection("certifications")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<section class="section wrap" aria-labelledby="education">
+  <SectionHeading id="education" number={number} title="Education" />
+
+  <ol class="list">
+    {education.map((entry) => (
+      <li class="item">
+        <p class="when mono">{entry.data.period}</p>
+        <div>
+          <h3>{entry.data.qualification}</h3>
+          <p class="institution">{entry.data.institution}</p>
+          {entry.data.detail && <p class="detail">{entry.data.detail}</p>}
+          {entry.data.link && (
+            <a class="text-link" href={entry.data.link.href}>
+              {entry.data.link.label}
+              <Icon name="arrow-right" />
+            </a>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <h3 class="label certs-title">Certifications</h3>
+  <ul class="certs">
+    {certifications.map((cert) => (
+      <li>
+        <span class="name">{cert.data.name}</span>
+        <span class="mono meta">
+          {cert.data.issuer} · {cert.data.date}
+        </span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .list,
+  .certs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .item:first-child {
+    border-top: 1px solid var(--rule-strong);
+  }
+
+  .when {
+    color: var(--ink-2);
+  }
+
+  .item h3 {
+    font-size: clamp(1.1875rem, 1.05rem + 0.5vw, 1.4375rem);
+    font-weight: 620;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  .institution {
+    color: var(--ink-2);
+  }
+
+  .detail {
+    margin-top: 0.4rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  .text-link {
+    margin-top: 0.75rem;
+  }
+
+  .certs-title {
+    margin-top: 2.5rem;
+  }
+
+  .certs {
+    display: grid;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .certs li {
+    display: grid;
+    gap: 0.2rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .meta {
+    color: var(--muted);
+  }
+
+  @media (min-width: 64rem) {
+    .item {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      column-gap: 2rem;
+    }
+
+    .certs li {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 2rem;
+      align-items: baseline;
+    }
+  }
+</style>

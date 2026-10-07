@@ -1,0 +1,20 @@
+- id: gcp-cdl
+  name: "Google Cloud Certified: Cloud Digital Leader"
+  issuer: Google Cloud
+  date: Jan 2024
+  order: 1
+- id: gcp-career-readiness
+  name: "Google Cloud Career Readiness: Cloud Digital Leader Track"
+  issuer: Google Cloud
+  date: Oct 2023
+  order: 2
+- id: vlsi
+  name: VLSI Design Methodologies
+  issuer: Maven Silicon
+  date: Oct 2023
+  order: 3
+- id: networking
+  name: The Bits and Bytes of Computer Networking
+  issuer: Coursera
+  date: Jan 2023
+  order: 4

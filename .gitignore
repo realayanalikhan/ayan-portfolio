@@ -32,3 +32,6 @@ desktop.ini
 
 # private local planning documents (never commit)
 PORTFOLIO_CONTENT_PLAN.md
+
+# local confidentiality list for the public-content check (never commit)
+.confidential/

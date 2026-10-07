@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { withBase } from "../data/site";
 import Icon from "./Icon.astro";
 import SectionHeading from "./SectionHeading.astro";
 
@@ -28,7 +29,7 @@ const certifications = (await getCollection("certifications")).sort(
           <p class="institution">{entry.data.institution}</p>
           {entry.data.detail && <p class="detail">{entry.data.detail}</p>}
           {entry.data.link && (
-            <a class="text-link" href={entry.data.link.href}>
+            <a class="text-link" href={withBase(entry.data.link.href)}>
               {entry.data.link.label}
               <Icon name="arrow-right" />
             </a>

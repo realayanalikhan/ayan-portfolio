@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { withBase } from "../data/site";
 import Icon from "./Icon.astro";
 import StackList from "./StackList.astro";
 
@@ -20,7 +21,7 @@ const {
 ---
 
 <header class="case-header">
-  <a class="back text-link" href="/#work">
+  <a class="back text-link" href={withBase("/#work")}>
     <Icon name="arrow-left" />
     All work
   </a>

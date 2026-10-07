@@ -1,5 +1,5 @@
 ---
-import { contactLinks, site } from "../data/site";
+import { contactLinks, site, withBase } from "../data/site";
 import Icon from "./Icon.astro";
 
 const focus: { label: string; value: string; href?: string }[] = [
@@ -9,7 +9,7 @@ const focus: { label: string; value: string; href?: string }[] = [
   {
     label: "Research",
     value: "Applied LLM evaluation (MSc)",
-    href: "/work/llm-text-simplification/",
+    href: withBase("/work/llm-text-simplification/"),
   },
   { label: "Also", value: "Video, content and entrepreneurship" },
 ];

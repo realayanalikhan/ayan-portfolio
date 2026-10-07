@@ -5,7 +5,7 @@ import CaseFigure from "../components/CaseFigure.astro";
 import CaseHeader from "../components/CaseHeader.astro";
 import FactStrip from "../components/FactStrip.astro";
 import Icon from "../components/Icon.astro";
-import { site } from "../data/site";
+import { site, withBase } from "../data/site";
 import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
@@ -118,7 +118,7 @@ const article = {
     </div>
 
     <footer class="case-footer">
-      <a class="btn" href="/#work">
+      <a class="btn" href={withBase("/#work")}>
         <Icon name="arrow-left" />
         Back to selected work
       </a>

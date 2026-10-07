@@ -1,15 +1,15 @@
 ---
-import { site } from "../data/site";
+import { isHomePath, site, withBase } from "../data/site";
 import Nav from "./Nav.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
 // The home-page hero already states the title, so the header only repeats it elsewhere.
-const isHome = Astro.url.pathname === "/";
+const isHome = isHomePath(Astro.url.pathname);
 ---
 
 <header class="site-header">
   <div class="wrap bar">
-    <a class="wordmark" href="/" aria-label={`${site.name}, home`}>
+    <a class="wordmark" href={withBase("/")} aria-label={`${site.name}, home`}>
       <span class="name">{site.name}</span>
       {!isHome && <span class="role label">{site.title}</span>}
     </a>

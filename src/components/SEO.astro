@@ -1,5 +1,5 @@
 ---
-import { site } from "../data/site";
+import { site, withBase } from "../data/site";
 
 interface Props {
   title: string;
@@ -16,7 +16,7 @@ const canonical = Astro.site
   : undefined;
 const image =
   Astro.site && site.socialImage
-    ? new URL(site.socialImage, Astro.site).href
+    ? new URL(withBase(site.socialImage), Astro.site).href
     : undefined;
 ---
 

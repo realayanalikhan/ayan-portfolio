@@ -81,4 +81,11 @@ Values left as `null` in `src/data/site.ts` are simply not rendered.
 
 ## Deployment
 
-Not deployed yet. Set `SITE_URL` (e.g. `https://example.com`) in the hosting environment to enable canonical URLs, absolute social metadata and `sitemap-index.xml`.
+Pushes to `main` build and deploy the site to GitHub Pages through `.github/workflows/deploy.yml` (Repository settings → Pages → Source: **GitHub Actions**). The workflow runs `npm ci` and `npm run build`, then publishes `dist/` with the official Pages actions.
+
+The workflow sets two environment variables from the Pages configuration:
+
+- `SITE_URL`: the site origin (e.g. `https://realayanalikhan.github.io`), which enables canonical URLs, absolute social metadata and `sitemap-index.xml`.
+- `BASE_PATH`: the project sub-path (e.g. `/ayan-portfolio`). Internal links use `withBase()` from `src/data/site.ts`, so they work under the sub-path.
+
+Neither is set locally, so development and local previews run at `/`.

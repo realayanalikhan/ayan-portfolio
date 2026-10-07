@@ -8,6 +8,20 @@ import { join } from "node:path";
 
 const CV_FILE = "ayan-ali-khan-cv.pdf";
 
+/** The configured base path without a trailing slash ("" locally, "/ayan-portfolio" on Pages). */
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+/** Prefix a root-relative path (e.g. "/work/x/" or "/#work") with the site's base path. */
+export function withBase(path: string): string {
+  return `${BASE}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+/** True when a request path is the home page, with or without the base path. */
+export function isHomePath(pathname: string): boolean {
+  const trim = (value: string) => value.replace(/\/+$/, "");
+  return trim(pathname) === trim(withBase("/"));
+}
+
 export const site = {
   name: "Ayan Ali Khan",
   title: "Full-Stack Software Developer",
@@ -50,7 +64,7 @@ export const site = {
 
   /** The CV link appears automatically once public/ayan-ali-khan-cv.pdf exists. */
   cv: {
-    href: `/${CV_FILE}`,
+    href: withBase(`/${CV_FILE}`),
     available: existsSync(join(process.cwd(), "public", CV_FILE)),
   },
 };

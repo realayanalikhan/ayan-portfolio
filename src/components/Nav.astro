@@ -1,9 +1,9 @@
 ---
-import { contactLinks, site } from "../data/site";
+import { contactLinks, isHomePath, site, withBase } from "../data/site";
 import Icon from "./Icon.astro";
 
 // On the home page links are in-page anchors; elsewhere they point back to home.
-const base = Astro.url.pathname === "/" ? "" : "/";
+const base = isHomePath(Astro.url.pathname) ? "" : withBase("/");
 const items = [
   { href: `${base}#work`, label: "Work" },
   { href: `${base}#content`, label: "Content" },

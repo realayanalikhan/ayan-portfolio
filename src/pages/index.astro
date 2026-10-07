@@ -6,7 +6,7 @@ import Education from "../components/Education.astro";
 import Experience from "../components/Experience.astro";
 import Hero from "../components/Hero.astro";
 import WorkIndex from "../components/WorkIndex.astro";
-import { contactLinks, site } from "../data/site";
+import { contactLinks, site, withBase } from "../data/site";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const sameAs = [
@@ -36,7 +36,7 @@ const person = {
     "Large language models",
     "Video production",
   ],
-  ...(Astro.site ? { url: Astro.site.href } : {}),
+  ...(Astro.site ? { url: new URL(withBase("/"), Astro.site).href } : {}),
   ...(sameAs.length ? { sameAs } : {}),
 };
 

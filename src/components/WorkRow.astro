@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { withBase } from "../data/site";
 import Icon from "./Icon.astro";
 import StackList from "./StackList.astro";
 
@@ -19,7 +20,7 @@ const {
   stack,
   indexFacts = [],
 } = project.data;
-const href = `/work/${project.id}/`;
+const href = withBase(`/work/${project.id}/`);
 ---
 
 <article class="featured" aria-labelledby={`project-${project.id}`}>

@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import portrait from "../assets/profile/ayan-ali-khan.jpg";
 
 /**
  * Site-wide settings. Values set to `null` are pending and are simply not
@@ -36,18 +37,23 @@ export const site = {
     "Ayan Ali Khan is a full-stack software developer working across web applications, secure data-integrity-first backends, testing and delivery, with MSc research on large language models.",
   locale: "en-GB",
 
-  /** Contact links. Pending: fill in once approved. */
+  /** Public contact links. Set a value to null to hide that link. */
   contact: {
-    email: null as string | null,
-    linkedin: null as string | null,
-    /** Current GitHub identity: realayanalikhan (set the full URL once approved). */
-    github: null as string | null,
+    email: "alikhanayan05@gmail.com" as string | null,
+    linkedin: "https://www.linkedin.com/in/ayan-ali-khan/" as string | null,
+    github: "https://github.com/realayanalikhan" as string | null,
   },
 
-  /** Own creative channels. Pending: fill in once approved. */
+  /** Portrait for the About section (the same image in both themes). */
+  portrait: {
+    src: portrait,
+    alt: "Portrait of Ayan Ali Khan",
+  },
+
+  /** Own creative channels. */
   channels: {
-    youtube: null as string | null,
-    instagram: null as string | null,
+    youtube: "https://www.youtube.com/@RealAyanAliKhan" as string | null,
+    instagram: "https://www.instagram.com/realayanalikhan/" as string | null,
   },
 
   /**
@@ -69,23 +75,41 @@ export const site = {
   },
 };
 
-export type ContactLink = { label: string; href: string; external: boolean };
+export type ContactLink = {
+  label: string;
+  /** The address or handle, shown beside the label. */
+  detail: string;
+  href: string;
+  external: boolean;
+};
+
+/** "https://www.linkedin.com/in/x/" -> "linkedin.com/in/x" */
+function displayUrl(url: string): string {
+  return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "");
+}
 
 export function contactLinks(): ContactLink[] {
   const links: ContactLink[] = [];
   if (site.contact.email)
     links.push({
       label: "Email",
+      detail: site.contact.email,
       href: `mailto:${site.contact.email}`,
       external: false,
     });
   if (site.contact.linkedin)
     links.push({
       label: "LinkedIn",
+      detail: displayUrl(site.contact.linkedin),
       href: site.contact.linkedin,
       external: true,
     });
   if (site.contact.github)
-    links.push({ label: "GitHub", href: site.contact.github, external: true });
+    links.push({
+      label: "GitHub",
+      detail: displayUrl(site.contact.github),
+      href: site.contact.github,
+      external: true,
+    });
   return links;
 }

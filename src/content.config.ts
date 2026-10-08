@@ -32,6 +32,8 @@ const projects = defineCollection({
         indexFacts: z.array(z.string()).optional(),
         stack: z.array(z.string()).default([]),
         responsibilities: z.array(z.string()).default([]),
+        /** Compact entries: show every responsibility on narrow screens (default shows two). */
+        mobileShowAll: z.boolean().default(false),
         /** Key figures (case studies only). */
         facts: z
           .array(z.object({ label: z.string(), value: z.string() }))
@@ -46,6 +48,8 @@ const projects = defineCollection({
               src: image(),
               alt: z.string().min(1),
               caption: z.string().optional(),
+              /** Client work only: set once the image has been redacted and approved. */
+              cleared: z.boolean().default(false),
             }),
           )
           .optional(),
@@ -54,14 +58,19 @@ const projects = defineCollection({
           .optional(),
         /** Disclosure level 0–4 (see the private plan). */
         disclosure: z.number().int().min(0).max(4),
-        /** Anonymised client work: text only, no images, links or figures. */
+        /** Anonymised client work: no links or figures; images only once cleared. */
         anonymised: z.boolean(),
         draft: z.boolean().default(false),
       })
+      .refine((p) => !p.anonymised || (!p.links && !p.facts?.length), {
+        message: "Anonymised entries must not have links or facts.",
+      })
       .refine(
-        (p) =>
-          !p.anonymised || (!p.images?.length && !p.links && !p.facts?.length),
-        { message: "Anonymised entries must not have images, links or facts." },
+        (p) => !p.anonymised || (p.images ?? []).every((img) => img.cleared),
+        {
+          message:
+            "Images on anonymised entries must be redacted and marked cleared.",
+        },
       )
       .refine((p) => p.kind === "case-study" || !p.facts?.length, {
         message: "Only case studies can have facts.",
@@ -111,16 +120,27 @@ const certifications = defineCollection({
 const creative = defineCollection({
   loader: file("src/content/creative.yaml"),
   schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      platform: z.enum(["youtube", "instagram", "other"]),
-      kind: z.enum(["vlog", "reel", "short"]),
-      url: z.url(),
-      thumbnail: image(),
-      alt: z.string().min(1),
-      year: z.string(),
-      order: z.number().int(),
-    }),
+    z
+      .object({
+        title: z.string(),
+        platform: z.enum(["youtube", "instagram", "other"]),
+        kind: z.enum(["vlog", "reel", "short"]),
+        /** Who it was made for: Edvoy (professional) or the own channels. */
+        context: z.enum(["edvoy", "own"]),
+        url: z.url(),
+        /** Optional: without one the card is typographic (no remote images). */
+        thumbnail: image().optional(),
+        alt: z.string().min(1).optional(),
+        year: z.string(),
+        /** Running time, e.g. "9 min". */
+        duration: z.string().optional(),
+        /** Only a figure that can be checked on the public page. */
+        stat: z.string().optional(),
+        order: z.number().int(),
+      })
+      .refine((item) => !item.thumbnail || item.alt, {
+        message: "Thumbnails need alt text.",
+      }),
 });
 
 export const collections = {

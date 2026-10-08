@@ -9,7 +9,9 @@ interface Props {
 }
 
 const { number } = Astro.props;
-const links = contactLinks();
+// The section lists email only. LinkedIn and GitHub stay in site data for the
+// structured data (sameAs) but are not shown here.
+const links = contactLinks().filter((link) => link.label === "Email");
 ---
 
 {links.length > 0 ? (
@@ -24,7 +26,8 @@ const links = contactLinks();
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}
           >
-            <span>{link.label}</span>
+            <span class="label-text">{link.label}</span>
+            <span class="detail">{link.detail}</span>
             <Icon name={link.external ? "arrow-up-right" : "arrow-right"} />
             {link.external && <span class="sr-only">(opens in a new tab)</span>}
           </a>
@@ -47,11 +50,12 @@ const links = contactLinks();
   }
 
   .links a {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    gap: 0.15rem 1rem;
     min-height: 4.5rem;
+    padding-block: 0.75rem;
     border-bottom: 1px solid var(--rule);
     font-size: clamp(1.375rem, 1.1rem + 1.4vw, 2.5rem);
     font-weight: 620;
@@ -65,7 +69,42 @@ const links = contactLinks();
   }
 
   .links a :global(.icon) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
     width: 0.75em;
     height: 0.75em;
+  }
+
+  /* The address or handle: monospace, so it reads as something to copy. */
+  .detail {
+    grid-column: 1;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .links a:hover .detail {
+    color: inherit;
+  }
+
+  @media (min-width: 48rem) {
+    .links a {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      column-gap: 2rem;
+    }
+
+    .detail {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: 0.9375rem;
+    }
+
+    .links a :global(.icon) {
+      grid-column: 3;
+      grid-row: 1;
+    }
   }
 </style>

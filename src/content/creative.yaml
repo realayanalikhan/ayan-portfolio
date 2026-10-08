@@ -1,13 +1,90 @@
-# Selected own videos/Reels (pending). Add 4–8 approved, non-sensitive items:
-# put the thumbnail in src/assets/creative/ and add an entry like:
+# Curated public videos and Reels for the Content & video section. Not a feed:
+# each entry is chosen by hand and links to the original post.
 #
-# - id: example-slug
-#   title: Video title
-#   platform: youtube        # youtube | instagram | other
-#   kind: vlog               # vlog | reel | short
-#   url: https://...
-#   thumbnail: ../assets/creative/example.jpg
-#   alt: Describe what the thumbnail shows
-#   year: "2026"
-#   order: 1
-[]
+# - Thumbnails live in src/assets/creative/, stored locally so the page makes
+#   no third-party requests: the channel's own YouTube thumbnails, and Reel
+#   covers supplied by Ayan (cropped to 9:16, Instagram's overlay removed).
+#   An entry without a thumbnail renders as a typographic card.
+# - `stat` is shown on the card: only use a figure visible on the public page.
+
+- id: edvoy-cheapest-way-to-live-in-the-uk
+  title: The cheapest way to live in the UK
+  platform: instagram
+  kind: reel
+  context: edvoy
+  url: https://www.instagram.com/reel/DXtwvZSjP6w/
+  thumbnail: ../assets/creative/reel-cheapest-way-to-live-in-the-uk.png
+  alt: 'Reel cover: Ayan on a tree-lined path under the caption "480 £, 64000 rs per month"'
+  year: "2026"
+  order: 1
+
+- id: edvoy-uk-degree
+  title: UK degree vs Indian degree
+  platform: instagram
+  kind: reel
+  context: edvoy
+  url: https://www.instagram.com/reel/DYUivkDsnQS/
+  thumbnail: ../assets/creative/reel-uk-degree.png
+  alt: 'Reel cover: Ayan on a university lawn under the caption "UK degree vs Indian degree"'
+  year: "2026"
+  order: 2
+
+- id: own-uk-student-visas
+  title: UK student visas are getting harder to get
+  platform: instagram
+  kind: reel
+  context: own
+  url: https://www.instagram.com/reel/DdnPzd0In59/
+  thumbnail: ../assets/creative/reel-uk-student-visas.png
+  alt: 'Reel cover: Ayan below a graphic headed "Pakistan to UK, students going to study"'
+  year: "2026"
+  order: 3
+
+- id: own-the-abroad-map-is-changing
+  title: The study-abroad map is changing
+  platform: instagram
+  kind: reel
+  context: own
+  url: https://www.instagram.com/reel/Dd0jYBcs1c4/
+  thumbnail: ../assets/creative/reel-study-abroad-map.png
+  alt: 'Reel cover: Ayan below a map highlighting the USA, headed "Indian student visas"'
+  year: "2026"
+  order: 4
+
+# stat: YouTube showed 26,576 views on 8 Oct 2026.
+- id: youtube-accommodation-tour
+  title: UK student accommodation tour
+  platform: youtube
+  kind: vlog
+  context: own
+  url: https://www.youtube.com/watch?v=LhIf0N4RyFg
+  thumbnail: ../assets/creative/youtube-accommodation-tour.jpg
+  alt: Ayan outside a red-brick student accommodation building, with inset photos of a bedroom and shared facilities
+  year: "2026"
+  duration: 9 min
+  stat: 25K+ views
+  order: 5
+
+- id: youtube-campus-tour
+  title: University of Exeter campus tour
+  platform: youtube
+  kind: vlog
+  context: own
+  url: https://www.youtube.com/watch?v=ASZDw-EDOnA
+  thumbnail: ../assets/creative/youtube-campus-tour.jpg
+  alt: Ayan on the University of Exeter campus beside a university banner
+  year: "2026"
+  duration: 32 min
+  order: 6
+
+- id: youtube-castle-trip
+  title: By bus to a 600-year-old castle
+  platform: youtube
+  kind: vlog
+  context: own
+  url: https://www.youtube.com/watch?v=YQq0AnYFOUI
+  thumbnail: ../assets/creative/youtube-castle-trip.jpg
+  alt: Ayan in front of a hilltop castle in morning mist, with a red bus on the left
+  year: "2026"
+  duration: 26 min
+  order: 7

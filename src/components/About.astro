@@ -1,4 +1,6 @@
 ---
+import { Picture } from "astro:assets";
+import { site } from "../data/site";
 import CapabilityList from "./CapabilityList.astro";
 import SectionHeading from "./SectionHeading.astro";
 
@@ -13,6 +15,18 @@ const { number } = Astro.props;
   <SectionHeading id="about" number={number} title="About" />
 
   <div class="grid">
+    <figure class="portrait">
+      <Picture
+        src={site.portrait.src}
+        alt={site.portrait.alt}
+        formats={["avif", "webp"]}
+        widths={[240, 360, 480, 563]}
+        sizes="(min-width: 64rem) 15rem, 10rem"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+
     <div class="text">
       <p class="lead">
         I am a full-stack software developer. I take a problem from its first
@@ -44,14 +58,41 @@ const { number } = Astro.props;
       </ul>
     </div>
 
-    <CapabilityList />
+    <div class="capabilities">
+      <CapabilityList />
+    </div>
   </div>
 </section>
 
 <style>
   .grid {
     display: grid;
+    grid-template-areas: "portrait" "text" "capabilities";
     gap: 3rem;
+  }
+
+  .portrait {
+    grid-area: portrait;
+    width: 10rem;
+    margin: 0 0 -1rem;
+  }
+
+  .portrait :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .text {
+    grid-area: text;
+  }
+
+  .capabilities {
+    grid-area: capabilities;
   }
 
   .text {
@@ -100,8 +141,17 @@ const { number } = Astro.props;
 
   @media (min-width: 64rem) {
     .grid {
+      grid-template-areas:
+        "text portrait"
+        "text capabilities";
       grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-      gap: 4.5rem;
+      grid-template-rows: auto 1fr;
+      gap: 3rem 4.5rem;
+    }
+
+    .portrait {
+      width: 15rem;
+      margin: 0;
     }
   }
 </style>

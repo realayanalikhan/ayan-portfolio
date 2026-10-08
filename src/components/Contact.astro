@@ -9,9 +9,11 @@ interface Props {
 }
 
 const { number } = Astro.props;
-// The section lists email only. LinkedIn and GitHub stay in site data for the
-// structured data (sameAs) but are not shown here.
-const links = contactLinks().filter((link) => link.label === "Email");
+// The section lists email and LinkedIn. GitHub stays in site data for the
+// structured data (sameAs) but is not shown here.
+const links = contactLinks().filter((link) =>
+  ["Email", "LinkedIn"].includes(link.label),
+);
 ---
 
 {links.length > 0 ? (
